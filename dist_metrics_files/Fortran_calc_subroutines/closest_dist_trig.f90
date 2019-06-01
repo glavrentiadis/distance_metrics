@@ -1,5 +1,5 @@
 !---------------------------------------------------------------------
-!     Closest point to triangle
+!     Closest distance to triangle
 !     This set of functions and routines returns the closest distance
 !     between a triangle and point in 3D Euclidean space
 ! 
@@ -86,7 +86,7 @@
       eps = 1e-4 !tolerance for zero area
       if (Atrig < eps) then
         flag_inside = .false. !colinear points
-     else
+      else
 !       1st rotation: rotate v1-v2 side to x-x' axis
         rot_mat = RotMatBetweenVects(v2_pr,axis_x);            ! rotation matrix
 !       compute rotated coordinates
