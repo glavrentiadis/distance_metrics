@@ -36,6 +36,9 @@ stas_xyz = np.array([[0,10,0],
                      [0,10,0],
                      [5,10,0]])
 
+## Compute distance and projection points
+# Compare with output of stand-alone function
+
 #compute distances
 dist_sta  = flt.py_wrapper_dist2sta(flt_top_xyz, flt_base_xyz, sta_xyz)
 dist_stas = flt.py_wrapper_dist2stas(flt_top_xyz, flt_base_xyz, stas_xyz)
@@ -43,6 +46,5 @@ dist_stas = flt.py_wrapper_dist2stas(flt_top_xyz, flt_base_xyz, stas_xyz)
 #compute distances and projection points
 dist_prj_sta  = flt.py_wrapper_dist_prj2sta(flt_top_xyz, flt_base_xyz, sta_xyz) 
 dist_prj_stas = flt.py_wrapper_dist_prj2stas(flt_top_xyz, flt_base_xyz, stas_xyz) 
-
 
 
