@@ -268,7 +268,7 @@
       dist_prj2sta(:,5) = dm_r_y0(1:n_sta)
       dist_prj2sta(:,6) = dm_u_pt(1:n_sta)
       dist_prj2sta(:,7) = dm_t_pt(1:n_sta)
-      dist_prj2sta(:,8:10) = dm_pt_prj(:,:)
+      dist_prj2sta(:,8:10) = dm_pt_prj(1:n_sta,:)
 
       end subroutine py_wrapper_dist_prj2stas
 
