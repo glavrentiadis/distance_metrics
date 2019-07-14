@@ -11,7 +11,7 @@
 ! --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
 !     Subroutine for exporting the station GC2 coordinates to R
 
-      subroutine r_wrapper_gc2(flt_xy,n_pt_flt,sta_xy,n_sta, sta_ut)
+      subroutine r_wrapper_gc2(flt_xy,sta_xy,n_pt_flt,n_sta, sta_ut)
 
 !     declare variables
       use memory_module
@@ -90,7 +90,7 @@
 ! --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
 !     Subroutine can be used for exporting the distance metrics to Python for multiple stations
 
-      subroutine py_wrapper_dist2stas(flt_xyz_top,flt_xyz_base,n_pt_flt,sta_xyz,n_sta, dist2sta)
+      subroutine py_wrapper_dist2stas(flt_xyz_top,flt_xyz_base,sta_xyz,n_pt_flt,n_sta,dist2sta)
 
 !     declare variables
       use memory_module
@@ -159,7 +159,7 @@
 ! --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
 !     Subroutine can be used for exporting the distance metrics to Python for a single station
 
-      subroutine py_wrapper_dist2sta(flt_xyz_top,flt_xyz_base,n_pt_flt,sta_xyz, dist2sta)
+      subroutine py_wrapper_dist2sta(flt_xyz_top,flt_xyz_base,sta_xyz,n_pt_flt, dist2sta)
 
 !     declare variables
       use memory_module
@@ -178,7 +178,7 @@
       double precision, dimension(1,7) :: dist2stas !distance metrics, interface between subroutines
 
       interface
-        subroutine Py_wrapper_dist2stas(flt_xyz_top,flt_xyz_base,n_pt_flt,sta_xyz,n_sta,dist2stas)
+        subroutine py_wrapper_dist2stas(flt_xyz_top,flt_xyz_base,sta_xyz,n_pt_flt,n_sta,dist2stas)
           integer, intent(IN) :: n_pt_flt, n_sta
           double precision, intent(IN), dimension(n_pt_flt,3) :: flt_xyz_top
           double precision, intent(IN), dimension(n_pt_flt,3) :: flt_xyz_base
@@ -189,7 +189,7 @@
 
       n_sta = 1 !distances are calculated for a single station
 
-      call Py_wrapper_dist2stas(flt_xyz_top,flt_xyz_base,n_pt_flt,sta_xyz,n_sta, dist2stas)
+      call py_wrapper_dist2stas(flt_xyz_top,flt_xyz_base,sta_xyz,n_pt_flt,n_sta, dist2stas)
       dist2sta = dist2stas(1,:)
 
       end subroutine py_wrapper_dist2sta
@@ -201,7 +201,7 @@
 !     Subroutine can be used for exporting the distance metrics and projection points 
 !     to Python for multiple stations
 
-      subroutine py_wrapper_dist_prj2stas(flt_xyz_top,flt_xyz_base,n_pt_flt,sta_xyz,n_sta, dist_prj2sta)
+      subroutine py_wrapper_dist_prj2stas(flt_xyz_top,flt_xyz_base,sta_xyz,n_pt_flt,n_sta, dist_prj2sta)
 
 !     declare variables
       use memory_module
@@ -275,7 +275,7 @@
 ! --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
 !     Subroutine can be used for exporting the distance metrics to Python for a single station
 
-      subroutine py_wrapper_dist_prj2sta(flt_xyz_top,flt_xyz_base,n_pt_flt,sta_xyz, dist_prj2sta)
+      subroutine py_wrapper_dist_prj2sta(flt_xyz_top,flt_xyz_base,sta_xyz,n_pt_flt, dist_prj2sta)
 
 !     declare variables
       use memory_module
@@ -294,7 +294,7 @@
       double precision, dimension(1,10) :: dist_prj2stas !distance metrics, interface between subroutines
 
       interface
-        subroutine py_wrapper_dist_prj2stas(flt_xyz_top,flt_xyz_base,n_pt_flt,sta_xyz,n_sta, & 
+        subroutine py_wrapper_dist_prj2stas(flt_xyz_top,flt_xyz_base,sta_xyz,n_pt_flt,n_sta, & 
                                            & dist_prj2stas)
           integer, intent(IN) :: n_pt_flt, n_sta
           double precision, intent(IN), dimension(n_pt_flt,3) :: flt_xyz_top
@@ -306,7 +306,7 @@
 
       n_sta = 1 !distances are calculated for a single station
 
-      call py_wrapper_dist_prj2stas(flt_xyz_top,flt_xyz_base,n_pt_flt,sta_xyz,n_sta, dist_prj2stas)
+      call py_wrapper_dist_prj2stas(flt_xyz_top,flt_xyz_base,sta_xyz,n_pt_flt,n_sta, dist_prj2stas)
       dist_prj2sta = dist_prj2stas(1,:)
 
       end subroutine py_wrapper_dist_prj2sta

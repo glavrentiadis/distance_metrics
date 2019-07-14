@@ -1,0 +1,29 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+module memory_module ! in distance_metrics_subroutine.f90
+    integer, parameter,optional :: max_num_seg=1
+    integer, parameter,optional :: max_num_pt_seg=100000
+    integer, parameter,optional :: max_num_sta=200000
+end module memory_module
+subroutine py_wrapper_dist2stas(flt_xyz_top,flt_xyz_base,sta_xyz,n_pt_flt,n_sta,dist2sta) ! in wrapper_routines.f90
+    use memory_module
+    double precision dimension(n_pt_flt,3),intent(in) :: flt_xyz_top
+    double precision dimension(n_pt_flt,3),intent(in),depend(n_pt_flt) :: flt_xyz_base
+    double precision dimension(n_sta,3),intent(in) :: sta_xyz
+    integer, optional,intent(in),check(shape(flt_xyz_top,0)==n_pt_flt),depend(flt_xyz_top) :: n_pt_flt=shape(flt_xyz_top,0)
+    integer, optional,intent(in),check(shape(sta_xyz,0)==n_sta),depend(sta_xyz) :: n_sta=shape(sta_xyz,0)
+    double precision dimension(n_sta,7),intent(out),depend(n_sta) :: dist2sta
+end subroutine py_wrapper_dist2stas
+subroutine py_wrapper_dist_prj2stas(flt_xyz_top,flt_xyz_base,sta_xyz,n_pt_flt,n_sta,dist_prj2sta) ! in wrapper_routines.f90
+    use memory_module
+    double precision dimension(n_pt_flt,3),intent(in) :: flt_xyz_top
+    double precision dimension(n_pt_flt,3),intent(in),depend(n_pt_flt) :: flt_xyz_base
+    double precision dimension(n_sta,3),intent(in) :: sta_xyz
+    integer, optional,intent(in),check(shape(flt_xyz_top,0)==n_pt_flt),depend(flt_xyz_top) :: n_pt_flt=shape(flt_xyz_top,0)
+    integer, optional,intent(in),check(shape(sta_xyz,0)==n_sta),depend(sta_xyz) :: n_sta=shape(sta_xyz,0)
+    double precision dimension(n_sta,10),intent(out),depend(n_sta) :: dist_prj2sta
+end subroutine py_wrapper_dist_prj2stas
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/
