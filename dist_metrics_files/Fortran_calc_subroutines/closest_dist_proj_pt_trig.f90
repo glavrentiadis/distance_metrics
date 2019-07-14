@@ -78,6 +78,11 @@
           real, intent(IN), dimension(3,3) :: A
           real, dimension(3,3) :: matinv3
         end function
+
+        function eye(n)
+          integer, intent(IN) :: n
+          real, dimension(3,3) :: eye
+        end function
       end interface
 
 !     initialize axes vectors
@@ -102,6 +107,8 @@
       eps = 1e-4 !tolerance for zero area
       if (Atrig < eps) then
         flag_inside = .false. !colinear points
+        rot_mat1 = eye(3)
+        rot_mat3 = eye(3)
       else
 !       1st rotation: rotate v1-v2 side to x-x' axis
         rot_mat1 = RotMatBetweenVects(v2_pr,axis_x);            ! rotation matrix
@@ -153,16 +160,15 @@
       end if
 
 !     remove effects of rotation
-!     1st rotation
-      inv_rot_mat = matinv3(rot_mat1)
-      pt_prj = matmul(inv_rot_mat,pt_prj)
 !     3rd rotation
       inv_rot_mat = matinv3(rot_mat3)
+      pt_prj = matmul(inv_rot_mat,pt_prj)
+!     1st rotation
+      inv_rot_mat = matinv3(rot_mat1)
       pt_prj = matmul(inv_rot_mat,pt_prj)
 
 !     remove effect of offset
       pt_prj = pt_prj + orig_off 
-      
 
       end subroutine ClosDistProjPtTrig3D
 

@@ -173,7 +173,7 @@
       real, intent(OUT), dimension(max_num_sta,3) :: pt_prj
 
       interface
-         subroutine FaultRrupPtPrj(fault_top, fualt_base, sta, n_flt, n_sta,r_rup, pt_prj)
+         subroutine FaultRrupPtPrj(fault_top, fualt_base, sta, n_flt, n_sta, r_rup, pt_prj)
            use memory_module
            integer, intent(IN) :: n_flt, n_sta
            real, intent(IN), dimension(max_num_pt_seg,3) :: fault_top, fualt_base
@@ -204,8 +204,9 @@
 !     Compute distance metrics
 ! --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
 !     compute closest distance and projection pt (R_rup and pr_prj)
+      k = 1
       call FaultRrupPtPrj(flt_cor_top(:,:,k),flt_cor_base(:,:,k),sta_cor, &
-                        & num_pt_seg(k),num_sta,r_rup,pt_prj)
+                          num_pt_seg(k),num_sta,r_rup,pt_prj)
 !     compute Joyner-Boore distance (R_jb)
       r_jb  =  FaultRJB(flt_cor_top(:,:,1),flt_cor_base(:,:,1),sta_cor,num_pt_seg(1),num_sta)
       do k = 2,num_seg
@@ -229,6 +230,8 @@
       tu_pt = GC2Coordinates(flt_cor_top,num_seg,num_pt_seg,sta_cor,num_sta)
       u_pt = tu_pt(:,2)
       t_pt = tu_pt(:,1)
+
+
 !     compute GC2 fault coordinates
       do k = 1,num_seg
 !       copy the coordinates of the k^th segment in flt_seg_k_cor       

@@ -1,13 +1,14 @@
 !------------------------------------------------------------------
-!     Distance Metrics Main
+!     Distance Metrics and Projection Points Main
 !     It is a stand alone program that computes common distance metrics used in GMPES
 ! 
 !-------------------------------------------------------------------
 
 ! --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
-!     Main program for calculating distance metrics
+!     Main program for calculating distance metrics and finding the projection 
+!     points on the fault plane
 
-      PROGRAM dist_metrics_main_prog
+      PROGRAM dist_metrics_prj_main_prog
 
 !     declare variables
       use memory_module
@@ -27,13 +28,15 @@
       real, dimension(max_num_sta) :: r_rup, r_jb
       real, dimension(max_num_sta) :: r_x, r_y, r_y0
       real, dimension(max_num_sta) :: u_pt, t_pt
+!-----projection points
+      real, dimension(max_num_sta,3) :: pt_prj
 !-----error handling
       integer :: f_iostat
       character (256) :: f_iomsg
 
       interface
-        subroutine dist_metrics(num_seg,num_pt_seg,flt_cor_top,flt_cor_base,num_sta,sta_cor, &
-                               & r_rup,r_jb,r_x,r_y,r_y0,u_pt,t_pt)
+        subroutine dist_metrics_and_prjpt(num_seg,num_pt_seg,flt_cor_top,flt_cor_base,num_sta,sta_cor, &
+                               & r_rup,r_jb,r_x,r_y,r_y0,u_pt,t_pt,pt_prj)
           use memory_module
           integer, intent(IN) :: num_seg, num_sta
           integer, intent(IN), dimension(max_num_seg) :: num_pt_seg
@@ -43,6 +46,7 @@
           real, intent(OUT), dimension(max_num_sta) :: r_rup, r_jb
           real, intent(OUT), dimension(max_num_sta) :: r_x, r_y, r_y0
           real, intent(OUT), dimension(max_num_sta) :: u_pt, t_pt
+          real, intent(OUT), dimension(max_num_sta,3) :: pt_prj
         end subroutine
       end interface 
 
@@ -115,27 +119,30 @@
 
 !     Compute distance metrics
 ! --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
-      call dist_metrics(num_seg_top,num_pt_seg_top,flt_cor_top,flt_cor_base, num_sta,sta_cor, &
-                       & r_rup,r_jb,r_x,r_y,r_y0,u_pt,t_pt)
+      call dist_metrics_and_prjpt(num_seg_top,num_pt_seg_top,flt_cor_top,flt_cor_base, num_sta,sta_cor, &
+                                 & r_rup,r_jb,r_x,r_y,r_y0,u_pt,t_pt,pt_prj)
 
 !     Write distance metrics
 ! --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
 !     write fault coordinates, top
-      open(unit = 21, file = 'distance_metrics.txt', action = 'WRITE', iostat=f_iostat, iomsg=f_iomsg)
+      open(unit = 21, file = 'distance_metrics_prj.txt', action = 'WRITE', iostat=f_iostat, iomsg=f_iomsg)
       if(f_iostat /= 0) then
         write(*,*) 'Open file21 failed with iostat = ', f_iostat, ' iomsg = '//trim(f_iomsg) 
       end if
 
 !     write file header
-      write(21,*) 'Sta_ID ','x ','y ','z ','R_rup ','R_jb ','R_x ','R_y ','R_y0 ','u ','t '
+      write(21,*) 'Sta_ID ','x ','y ','z ','R_rup ','R_jb ','R_x ','R_y ','R_y0 ', &
+                                           'u ','t ', &
+                                           'x_pj ','y_pj ','z_pj'
 !     write distance metrics
       do i = 1,num_sta
          write(21,*) i, (sta_cor(i,j), j = 1,3), r_rup(i), r_jb(i), r_x(i), r_y(i), r_y0(i), &
-                                                 u_pt(i), t_pt(i)
+                                                 u_pt(i), t_pt(i), &
+                                                 (pt_prj(i,j), j = 1,3)
       end do
 
 
-      END PROGRAM dist_metrics_main_prog
+      END PROGRAM dist_metrics_prj_main_prog
 
 
 

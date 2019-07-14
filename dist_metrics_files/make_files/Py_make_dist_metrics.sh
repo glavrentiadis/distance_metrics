@@ -28,7 +28,7 @@ f2py3 -c -m py_dist_metrics --f90flags=-ffixed-line-length-none distance_metrics
 
 
 #remove build folder
-mv py_dist_metrics.*.so ../py_dist_metrics.so
+mv py_dist_metrics.*.so ../../../dist_metrics_progs/py_dist_metrics.so
 cd ../
 rm -r build
 #cp py_dist_metrics.so ../../testing/.

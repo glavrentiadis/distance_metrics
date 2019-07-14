@@ -7,6 +7,7 @@
 !     Rev:    0.0
 ! 
 !     Contents:	       Matrix inversion functions
+!                      Identity matrix
 ! 
 !---------------------------------------------------------------------
 
@@ -16,6 +17,7 @@
 
       function matinv2(A)
 !     Performs a direct calculation of the inverse of a 2×2 matrix.
+      implicit none
       real, intent(in), dimension(2,2) :: A   !! Matrix
       real, dimension(2,2)             :: B   !! Inverse matrix
       real                             :: detinv
@@ -36,15 +38,16 @@
 
       function matinv3(A)
 !     Performs a direct calculation of the inverse of a 3×3 matrix.
+      implicit none
       real, intent(in), dimension(3,3) :: A   !! Matrix
       real, dimension(3,3)             :: B   !! Inverse matrix
       real                             :: detinv
       real, dimension(3,3)             :: matinv3
 
 !     Calculate the inverse determinant of the matrix
-      detinv = 1/(A(1,1)*A(2,2)*A(3,3) - A(1,1)*A(2,3)*A(3,2)&
-                 - A(1,2)*A(2,1)*A(3,3) + A(1,2)*A(2,3)*A(3,1)&
-                 + A(1,3)*A(2,1)*A(3,2) - A(1,3)*A(2,2)*A(3,1))
+      detinv = 1./(A(1,1)*A(2,2)*A(3,3) - A(1,1)*A(2,3)*A(3,2)&
+                   - A(1,2)*A(2,1)*A(3,3) + A(1,2)*A(2,3)*A(3,1)&
+                   + A(1,3)*A(2,1)*A(3,2) - A(1,3)*A(2,2)*A(3,1))
 
 !     Calculate the inverse of the matrix
       B(1,1) = +detinv * (A(2,2)*A(3,3) - A(2,3)*A(3,2))
@@ -58,5 +61,21 @@
       B(3,3) = +detinv * (A(1,1)*A(2,2) - A(1,2)*A(2,1))
 
       matinv3 = B
+
+      end function
+
+!---------------------------------------------------------------------
+!    IDENTITY MATRIX
+!---------------------------------------------------------------------
+
+      function eye(n)
+!     Returns the identity matrix, size nxn
+      implicit none
+      integer, intent(in) :: n          !size of identity matrix
+      integer :: j          
+      real, dimension(n,n) :: eye       !identity matrix
+
+      eye(:,:) = 0                           !initialize matrix
+      forall(j = 1:n) eye(j,j) = 1.          !set the diagonal.
 
       end function
