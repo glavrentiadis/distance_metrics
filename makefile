@@ -8,7 +8,7 @@ SRC_MDIR=source/main_program/
 SRC_WDIR=source/wrapper_subroutines/
 
 #program output directory
-PRGDIR=./progs/linux/
+PRGDIR=./progs/
 
 #compile stand alone programs
 FC=gfortran
